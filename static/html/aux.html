@@ -21,9 +21,7 @@
 
 <script>
 	// fullscreen on android
-	// if(navigator.userAgent.match(/Android/i)){
-		window.scrollTo(0,1);
-	// }
+	window.scrollTo(0,1);
 
 
 	$(function() {
@@ -46,16 +44,12 @@
 		socket.on('announcements', function (data) {
 			data = JSON.parse(data);
 			if (data["name"] == "consoleConfig")
-			{
 				createFaders(data["channelInputs"]);
-			}
-			// console.log('Annoucement:', data);
 		});
 
 		socket.on('name/input', function (data) {
 			data = JSON.parse(data);
 			updateFaderName(data["c"], data["n"]);
-			// console.log('Incoming message:', data);
 		});
 
 		socket.on('name/aux', function (data) {
@@ -66,7 +60,6 @@
 			data = JSON.parse(data);
 			if (data["a"] == auxnumber)
 				updateFaderLevel(data["c"], data["v"]);
-			// console.log('Incoming message:', data);
 		});
 
 		function createFaders(channels)

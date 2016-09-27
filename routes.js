@@ -12,6 +12,10 @@ module.exports=function(app, express) {
 		res.sendFile('static/html/aux.html' , { root : __dirname});
 	});
 
+	app.get('/aux', function (req, res) {
+		res.sendFile('static/html/index.html' , { root : __dirname});
+	});
+
 	app.get("/websocket", function(req, res)
 	{
 		res.sendFile('static/html/websocket.html' , { root : __dirname});

@@ -89,7 +89,7 @@ var sd9Console = {
 	"Aux_Outputs" : [
 		{ // aux 1
 			"Buss_Trim" : {
-				"name" : "aux 1",
+				"name" : "aux 1/bass",
 			},
 		},
 		{ // aux 2
@@ -117,7 +117,7 @@ var messageCallback = function(message)
 	var msg = message.args[0]
 
 	var patt;
-	console.log(message);
+
 	// check if input_name name
 	patt = new RegExp(/(\/Input_Channels\/)[0-9]*(\/Channel_Input\/name)/, '');
 	if (patt.test(address))
