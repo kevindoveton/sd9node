@@ -1,0 +1,33 @@
+{
+  "name": "sd9server",
+  "version": "0.0.1",
+  "description": "A middle man for the SD9 console, providing multiple clients access",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "express-ws": "^2.0.0",
+    "http": "^0.0.0",
+    "httpdispatcher": "^1.0.0",
+    "osc": "^2.1.0",
+    "socket.io": "^1.4.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevindoveton/digiconode.git"
+  },
+  "keywords": [
+    "sd9",
+    "digico"
+  ],
+  "author": "Kevin Doveton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevindoveton/digiconode/issues"
+  },
+  "homepage": "https://github.com/kevindoveton/digiconode#readme"
+}

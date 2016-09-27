@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- iOS Full screen -->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+	<link rel="stylesheet" href="/static/rangeslider.css">
+	<link rel="stylesheet" href="/static/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/main.css">
+
+	<script src="/static/jquery.min.js"></script>
+	<script>
+	$(function() {
+		function screenSizeUpdate()
+		{
+			var height = $(window).height();
+			console.log(height);
+			$("#app").height(height);
+		}
+		screenSizeUpdate();
+
+		$.get( "/sd9/auxnames/", function(data) {
+			data = (JSON.parse(data));
+			for (i = 0; i < data["values"].length; i++)
+			{
+				var input = '<div class="item"><a href="/sd9/aux/'+(i+1)+'" class="btn btn-primary btn-lg" id="aux'+i+'">'+data["values"][i]+'</a></div>'
+					$( "div#app" ).append(input);
+			}
+		});
+	});
+	</script>
+</head>
+<body>
+	<div id="app" class="app">
+		
+	</div>
+</body>
+</html>
