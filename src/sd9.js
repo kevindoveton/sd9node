@@ -2,6 +2,11 @@ var udp;
 var osc = require("osc");
 
 var sd9Console = {
+	"Console" : {
+		"Input_Channels" : 4,
+		"Aux_Outputs" : 4
+	},
+
 	"Input_Channels" : [
 		{
 			"Channel_Input" : {
@@ -125,9 +130,25 @@ var messageCallback = function(message)
 		split = address.split("/");
 		// set
 		if (address.slice(-1) !== "?")
-			sd9Console[split[1]][split[2]-1][split[3]][split[4]] = msg;
+		{
+			try {
+				sd9Console[split[1]][split[2]-1][split[3]][split[4]] = msg;
+			}
+			catch (err) {
+
+			}
+		}	
+			
 		else
-			sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]][split[4]]);
+		{
+			try {
+				sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]][split[4]]);
+			}
+			catch (err) {
+
+			}
+		}
+			
 	}
 	// check if aux name
 	patt = new RegExp(/(\/Aux_Outputs\/)[0-9]*(\/Buss_Trim\/name)/, '');
@@ -135,11 +156,16 @@ var messageCallback = function(message)
 	{
 		split = address.split("/");
 		if (address.slice(-1) !== "?")
-			sd9Console[split[1]][split[2]-1][split[3]][split[4]] = msg;
+		{
+			if (sd9Console[split[1]][split[2]-1][split[3]][split[4]] != undefined)
+				sd9Console[split[1]][split[2]-1][split[3]][split[4]] = msg;
+		}
 		else
-			sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]][split[4]]);
-			// console.log(sd9Console[split[1]][split[2]-1][split[3]][split[4]]);
-
+		{
+			if (sd9Console[split[1]][split[2]-1][split[3]][split[4]] != undefined)
+				sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]][split[4]]);
+		}
+			
 	}
 
 	// check if input aux volume
@@ -148,11 +174,48 @@ var messageCallback = function(message)
 	{
 		split = address.split("/");
 		if (address.slice(-1) !== "?")
-			sd9Console[split[1]][split[2]-1][split[3]][split[4]-1][split[5]] = msg;
+		{
+			try {
+				sd9Console[split[1]][split[2]-1][split[3]][split[4]-1][split[5]] = msg;
+			}
+			catch (err) {
+
+			}
+
+		}
 		else
-			sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]][split[4]-1][split[5]]);
+		{
+			try {
+				sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]][split[4]-1][split[5]]);
+			}
+			catch (err) {
+
+			}
+		}
 	}
 
+	patt = new RegExp(/(\/Console\/Aux_Outputs\/\?)/, '');
+	if (patt.test(address))
+	{
+		try {
+			sendMessage(address.slice(0,-2), sd9Console["Console"]["Aux_Outputs"]);
+		}
+		catch (err) {
+
+		}
+	}
+
+	patt = new RegExp(/(\/Console\/Input_Channels\/\?)/, '');
+	if (patt.test(address))
+	{
+		try {
+			console.log("a");
+			sendMessage(address.slice(0,-2), sd9Console["Console"]["Input_Channels"]);
+		}
+		catch (err) {
+
+		}
+	}
 };
 
 

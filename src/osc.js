@@ -24,9 +24,9 @@ exports.init = function(messageCallback)
 	// SD9 Server
 	udp = new osc.UDPPort({
 	    localAddress: "0.0.0.0",
-	    localPort: 6050 ,
-	    remoteAddress: "127.0.0.1",
-	    remotePort: 5050
+	    localPort: 5050 ,
+	    remoteAddress: "192.168.2.5",
+	    remotePort: 6050
 	});
 
 	udp.on("ready", function () {
@@ -52,7 +52,7 @@ exports.init = function(messageCallback)
 
 exports.sendMessage = function(address, message)
 {
-	console.log("message send");
+	console.log(address, message);
 	var msg = {
         address: address,
         args: [message]

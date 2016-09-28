@@ -2,19 +2,21 @@ var express = require('express');
 var app = express()
 var server = require('http').createServer(app);  
 var io = require('socket.io')(server);
-
+var socket;
 
 // routes
 var routes = require("./routes.js");
 routes(app, express);
 
+// request this from console...
 var consoleConfig = {
 	"name":"consoleConfig",
-	"channelInputs" : 4,
-	"auxOutputs" : 4
+	"channelInputs" : 48,
+	"auxOutputs" : 12
 }
 
 var osc = require("./osc.js");
+
 
 var oscMessageCallback = function(message)
 {
@@ -26,7 +28,6 @@ var oscMessageCallback = function(message)
 	var patt = new RegExp(/(\/Input_Channels\/)[0-9]*(\/Channel_Input\/name)/, '');
 	if (patt.test(address))
 	{
-		console.log("input channel name");
 		inputNameCallback(address, msg);
 	}
 
@@ -34,7 +35,6 @@ var oscMessageCallback = function(message)
 	patt = new RegExp(/(\/Input_Channels\/)[0-9]*(\/Aux_Send\/)[0-9]*(\/send_level)/, '');
 	if (patt.test(address))
 	{
-		console.log("input channel aux volume");
 		auxVolumeCallback(address, msg);
 	}
 
@@ -42,8 +42,27 @@ var oscMessageCallback = function(message)
 	patt = new RegExp(/(\/Aux_Outputs\/)[0-9]*(\/Buss_Trim\/name)/, '');
 	if (patt.test(address))
 	{
-		console.log("aux channel name");
 		auxNameCallback(address, msg);
+	}
+
+	patt = new RegExp(/(\/Console\/Input_Channels)/, '');
+	if (patt.test(address))
+	{
+		if (consoleConfig["channelInputs"] != msg)
+		{
+			consoleConfig["channelInputs"] = msg;
+			io.sockets.emit("announcements", JSON.stringify(consoleConfig));
+		}
+	}
+
+	patt = new RegExp(/(\/Console\/Aux_Outputs)/, '');
+	if (patt.test(address))
+	{
+		if (consoleConfig["auxOutputs"] != msg)
+		{
+			consoleConfig["auxOutputs"] = msg;
+			io.sockets.emit("announcements", JSON.stringify(consoleConfig));
+		}
 	}
 
 }
@@ -73,6 +92,12 @@ var requestInputLevelUpdate = function(auxnumber)
 	{
 		osc.sendMessage("/Input_Channels/"+i+"/Aux_Send/"+auxnumber+"/send_level/?", "")
 	}
+}
+
+var requestConsoleUpdate = function()
+{
+	osc.sendMessage("/Console/Input_Channels/?", "");
+	osc.sendMessage("/Console/Aux_Outputs/?", "");
 }
 
 var auxVolumeCallback = function(address, message)
@@ -123,8 +148,6 @@ server.listen(8000);
 
 // handle incoming connections from clients
 io.sockets.on('connection', function(socket) {
-	socket.emit("announcements", JSON.stringify(consoleConfig));
-
 	// once a client has connected, we expect to get a ping from them saying what room they want to join
 	socket.on('subscribe', function(room) {
 		socket.join(room);
@@ -136,15 +159,20 @@ io.sockets.on('connection', function(socket) {
 		updateAuxVolume(_data["a"], _data["c"], _data["v"]);
 	});
 
+	// client has requested updates
 	socket.on("request", function(data) {
 		if (data == "auxNames")
 			requestAuxNameUpdate();
 		else if (data == "inputNames")
 			requestInputNameUpdate();
+		else if (data == "consoleConfig")
+			requestConsoleUpdate();
 		else if (data.substr(0,19) == "inputAuxLevelVolume")
 			requestInputLevelUpdate(data.substr(19));
 	});
 
+	// send some settings
+	socket.emit("announcements", JSON.stringify(consoleConfig));
 });
 
 

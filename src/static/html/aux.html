@@ -25,18 +25,17 @@
 
 
 	$(function() {
-		var soundMin = 150;
+		var soundMin = 80;
 		var auxnumber = window.location.pathname.substring(5).replace ( /[^\d.]/g, '' )
 
 		var socket = io.connect();
 
 		socket.on('connect', function() {
-		// Connected, let's sign-up to receive messages for this room
+			socket.emit("request", "consoleConfig");
 			socket.emit('subscribe', "announcements");
 			socket.emit('subscribe', "name/input");
 			socket.emit('subscribe', "name/aux");
 			socket.emit('subscribe', "volume/aux/"+auxnumber);
-			socket.emit("request", "auxNames");
 			socket.emit("request", "inputAuxLevelVolume"+auxnumber);
 			socket.emit("request", "inputNames");
 		});
@@ -73,7 +72,7 @@
 				input += '<div class="fader"><input id="fader-'+(i+1)+'" type="range" min="0" max="100" value="'+faderLevel+'"data-rangeslider data-orientation="vertical"><p id="name-'+(i+1)+'" class="name">Channel '+(i+1)+'</p></div>'
 			}
 
-			$( "div#faders" ).append(input);
+			$( "div#faders" ).html(input);
 			createRanges();
 		}
 		

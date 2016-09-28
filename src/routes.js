@@ -1,8 +1,8 @@
-module.exports=function(app, express) {
+module.exports = function(app, express) {
 	// static files
 	app.use('/static', express.static('static'));
 
-	// home page
+	// aux home page
 	app.get('/', function (req, res) {
 		res.sendFile('static/html/index.html' , { root : __dirname});
 	});
@@ -12,12 +12,8 @@ module.exports=function(app, express) {
 		res.sendFile('static/html/aux.html' , { root : __dirname});
 	});
 
+	// redirect to aux home
 	app.get('/aux', function (req, res) {
 		res.sendFile('static/html/index.html' , { root : __dirname});
-	});
-
-	app.get("/websocket", function(req, res)
-	{
-		res.sendFile('static/html/websocket.html' , { root : __dirname});
 	});
 }
