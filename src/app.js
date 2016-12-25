@@ -5,8 +5,8 @@ const server = require('http').createServer(app);
 
 // user
 const routes = require("./routes");
-const oscCallback = require('./oscCallback');
 const osc = require("./osc");
+const oscCallback = require('./oscCallback');
 const sockets = require('./sockets')(server);
 
 // routes
