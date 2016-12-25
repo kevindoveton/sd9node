@@ -2,8 +2,8 @@ const oscFunctions = require('./oscFunctions');
 // TODO request this from console...
 var consoleConfig = {
 	"name" : "consoleConfig",
-	"channelInputs" : 48,
-	"auxOutputs" : 12
+	"channelInputs" : 4,
+	"auxOutputs" : 4
 };
 
 var io;
