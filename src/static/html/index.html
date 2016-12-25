@@ -50,7 +50,7 @@
 			var input = "";
 			for (i = 0; i < data["auxOutputs"]; i++)
 			{
-				input += '<div class="item"><a href="/aux/'+(i+1)+'" class="btn btn-primary btn-lg" id="aux'+(i+1)+'"></a></div>';
+				input += '<div class="item"><a onclick=\'window.location = this.getAttribute("href"); return false;\' href="/aux/'+(i+1)+'" class="btn btn-primary btn-lg" id="aux'+(i+1)+'"></a></div>';
 			}
 			$( "div#app" ).html(input);
 		}
@@ -59,6 +59,13 @@
 		{
 			var selector = "a#aux"+aux;
 			$(selector).text(name);
+		}
+
+		var auxClick = function(item)
+		{
+			alert("click");
+			window.location(item.getAttribute("href"));
+			return false;
 		}
 	});
 	</script>
