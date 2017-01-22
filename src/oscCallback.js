@@ -111,9 +111,3 @@ var auxNameCallback = function(address, message)
 
 	socket.groupEmit("name/aux", JSON.stringify(obj));
 }
-
-var updateAuxVolume = function(auxNumber, channel, volume)
-{
-	address = "/Input_Channels/"+(channel)+"/Aux_Send/"+(auxNumber)+"/send_level";
-	osc.sendMessage(address, volume);
-}

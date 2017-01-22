@@ -3,14 +3,14 @@ var osc = require("osc");
 
 var sd9Console = {
 	"Console" : {
-		"Input_Channels" : 4,
+		"Input_Channels" : 6,
 		"Aux_Outputs" : 4
 	},
 
 	"Input_Channels" : [
 		{
 			"Channel_Input" : {
-				"name" : "ch 1",
+				"name" : "channel 1 yo",
 			},
 
 			"Aux_Send" : [
@@ -73,7 +73,49 @@ var sd9Console = {
 			"Channel_Input" : {
 				"name" : "ch 4",
 			},
-			
+
+			"Aux_Send" : [
+				{ // aux 1 send
+					"send_level" : -55,
+				},
+				{ // aux 2 send
+					"send_level" : -9,
+				},
+				{ // aux 3 send
+					"send_level" : -31,
+				},
+				{ // aux 4 send
+					"send_level" : -11,
+				},
+			]
+		},
+		// channel 4
+		{
+			"Channel_Input" : {
+				"name" : "ch 5",
+			},
+
+			"Aux_Send" : [
+				{ // aux 1 send
+					"send_level" : -55,
+				},
+				{ // aux 2 send
+					"send_level" : -9,
+				},
+				{ // aux 3 send
+					"send_level" : -31,
+				},
+				{ // aux 4 send
+					"send_level" : -11,
+				},
+			]
+		},
+		// channel 4
+		{
+			"Channel_Input" : {
+				"name" : "ch 6",
+			},
+
 			"Aux_Send" : [
 				{ // aux 1 send
 					"send_level" : -55,
@@ -137,8 +179,8 @@ var messageCallback = function(message)
 			catch (err) {
 
 			}
-		}	
-			
+		}
+
 		else
 		{
 			try {
@@ -148,13 +190,14 @@ var messageCallback = function(message)
 
 			}
 		}
-			
+
 	}
 	// check if aux name
 	patt = new RegExp(/(\/Aux_Outputs\/)[0-9]*(\/Buss_Trim\/name)/, '');
 	if (patt.test(address))
 	{
 		split = address.split("/");
+		console.log(split);
 		if (address.slice(-1) !== "?")
 		{
 			if (sd9Console[split[1]][split[2]-1][split[3]][split[4]] != undefined)
@@ -165,7 +208,7 @@ var messageCallback = function(message)
 			if (sd9Console[split[1]][split[2]-1][split[3]][split[4]] != undefined)
 				sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]][split[4]]);
 		}
-			
+
 	}
 
 	// check if input aux volume

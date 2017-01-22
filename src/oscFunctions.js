@@ -28,3 +28,9 @@ exports.requestConsoleUpdate = function() {
 	osc.sendMessage("/Console/Input_Channels/?", "");
 	osc.sendMessage("/Console/Aux_Outputs/?", "");
 }
+
+exports.updateAuxVolume = function(auxNumber, channel, volume)
+{
+	address = "/Input_Channels/"+(channel)+"/Aux_Send/"+(auxNumber)+"/send_level";
+	osc.sendMessage(address, volume);
+}

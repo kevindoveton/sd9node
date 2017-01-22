@@ -20,8 +20,8 @@ $(function() {
 
 function screenSizeUpdate() {
 	var height = $(window).height();
-	console.log(height);
-	$("#app").height(height);
+	// console.log(height);
+	// $("#app").height(height);
 }
 
 function updateFaderName(channel, name) {
@@ -49,11 +49,26 @@ function createFaders(channels) {
 	var input = "";
 	var faderLevel = 0;
 	for (i = 0; i < channels; i++) {
-		input += '<div class="fader"><input id="fader-'+(i+1)+'" type="range" min="0" max="100" value="'+faderLevel+'"data-rangeslider data-orientation="vertical"><p id="name-'+(i+1)+'" class="name">Channel '+(i+1)+'</p><div id="mute-'+(i+1)+'" class="mute">&nbsp;</div></div>'
+		input += '<div class="fader"><input id="fader-'+(i+1)+'" type="range" min="0" max="100" value="'+faderLevel+'"data-rangeslider data-orientation="vertical"><p id="name-'+(i+1)+'" class="name">Channel '+(i+1)+'</p><div id="mute-'+(i+1)+'" class="mute"><p></p></div></div>'
 	}
 
 	$( "div#faders" ).html(input);
 	createRanges();
+
+	for (var i = 0; i < channels; i++) {
+		var fader = $($(".fader")[i]).append("<div class='faderNumbers'></div>").find("div.faderNumbers");
+		fader.append("<span>+10</span>");
+		fader.append("<span>+5</span>");
+		fader.append("<span>0</span>");
+		fader.append("<span>-5</span>");
+		fader.append("<span>-10</span>");
+		fader.append("<span>-20</span>");
+		fader.append("<span>-30</span>");
+		fader.append("<span>-40</span>");
+		fader.append("<span>-50</span>");
+		fader.append("<span>-60</span>");
+	}
+
 }
 
 function createButtons(data) {

@@ -2,7 +2,7 @@ const oscFunctions = require('./oscFunctions');
 // TODO request this from console...
 var consoleConfig = {
 	"name" : "consoleConfig",
-	"channelInputs" : 4,
+	"channelInputs" : 6,
 	"auxOutputs" : 4
 };
 
@@ -31,7 +31,7 @@ module.exports = function(server) {
 			// client has requested updates
 			socket.on("request", function(data) {
 				if (data == "auxNames") {
-					oscFunctions.requestAuxNameUpdate(1, consoleConfig['channelInputs']);
+					oscFunctions.requestAuxNameUpdate(1, consoleConfig['auxOutputs']);
 				}
 				else if (data == "inputNames") {
 					oscFunctions.requestInputNameUpdate(1, consoleConfig['auxOutputs']);
