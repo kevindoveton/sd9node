@@ -1,3 +1,5 @@
+var soundMin = 80;
+
 window.scrollTo(0, 1);
 
 window.addEventListener("orientationchange", screenSizeUpdate);
@@ -62,11 +64,11 @@ var auxClick = function(item) {
     return false;
 };
 
+var socket = io.connect();
+
 $(function() {
-    var soundMin = 80;
     var auxnumber = window.location.pathname.substring(5).replace(/[^\d.]/g, "");
     $("#auxName").text("Aux " + auxnumber);
-    var socket = io.connect();
     socket.on("connect", function() {
         socket.emit("request", "consoleConfig");
         socket.emit("subscribe", "announcements");
@@ -113,6 +115,7 @@ $(function() {
 });
 
 $(function() {
+    var socket = io.connect();
     socket.on("connect", function() {
         socket.emit("subscribe", "announcements");
         socket.emit("subscribe", "name/aux");

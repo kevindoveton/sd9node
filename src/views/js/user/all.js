@@ -1,3 +1,5 @@
+var soundMin = 80;
+
 // fullscreen on android
 window.scrollTo(0,1);
 window.addEventListener('orientationchange', screenSizeUpdate);

@@ -35,6 +35,7 @@ gulp.task('pug', function () {
 });
 
 gulp.task('js', function() {
+	console.log('js');
 	// user
 	pump([
 		gulp.src('./src/views/js/user/*.js'),
@@ -58,7 +59,13 @@ gulp.task('js', function() {
 	pump([
 		gulp.src('./src/views/js/vendor/*.js'),
 		concat('vendor.js'),
-		uglify(),
+		uglify({
+			mangle: false,
+			compress: false,
+			output: {
+				beautify: false
+			}
+		}),
 		gulp.dest(paths.js)
 	], function(e) {
 		if (e !== undefined)
@@ -119,4 +126,4 @@ gulp.task('build', ['sass', 'pug', 'js']);
  * compile the jekyll site, launch BrowserSync then watch
  * files for changes
  */
-gulp.task('default', ['watch']);
+gulp.task('default', ['build','watch']);
