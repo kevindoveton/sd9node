@@ -49,8 +49,10 @@ $(function() {
 
 	socket.on('mute/input', function(data) {
 		data = JSON.parse(data);
-		$("#mute-"+data.c).toggleClass("mute", !!data.m);
-		$("#mute-"+data.c).toggleClass("unmute", !data.m);
+		console.log(data);
+		$("#js-rangeslider-"+(data.c - 1)).find(".rangeslider__handle").first().toggleClass("mute", !!data.m);
+		// $("#mute-"+data.c).toggleClass("mute", !!data.m);
+		// $("#mute-"+data.c).toggleClass("unmute", !data.m);
 	});
 
 	screenSizeUpdate();

@@ -18,11 +18,11 @@ function createRanges()
 		// Callback function
 		onSlide: function(position, value) {
 
-			// update level on mute text
-			var ch = (this.$element[0].id).substr(6);
-			volume = -(Math.pow(10,-((value-100)/100)*Math.log10(1+soundMin))-1)
-			volume = Math.round(volume*100)/100
-			$("#mute-"+ ch + " p").text(volume);
+			// // update level on mute text
+			// var ch = (this.$element[0].id).substr(6);
+			// volume = -(Math.pow(10,-((value-100)/100)*Math.log10(1+soundMin))-1)
+			// volume = Math.round(volume*100)/100
+			// $("#mute-"+ ch + " p").text(volume);
 
 			// // prevent scrolling
 			// $(document).on('scroll touchmove mousewheel', function(e) {

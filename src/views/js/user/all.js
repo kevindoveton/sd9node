@@ -49,7 +49,8 @@ function createFaders(channels) {
 	var input = "";
 	var faderLevel = 0;
 	for (i = 0; i < channels; i++) {
-		input += '<div class="fader"><input id="fader-'+(i+1)+'" type="range" min="0" max="100" value="'+faderLevel+'"data-rangeslider data-orientation="vertical"><p id="name-'+(i+1)+'" class="name">Channel '+(i+1)+'</p><div id="mute-'+(i+1)+'" class="mute"><p></p></div></div>'
+		// input += '<div class="fader"><input id="fader-'+(i+1)+'" type="range" min="0" max="100" value="'+faderLevel+'"data-rangeslider data-orientation="vertical"><p id="name-'+(i+1)+'" class="name">Channel '+(i+1)+'</p><div id="mute-'+(i+1)+'" class="mute"><p></p></div></div>' // <div id="mute-'+(i+1)+'" class="mute"><p></p></div>
+		input += '<div class="fader"><input id="fader-'+(i+1)+'" type="range" min="0" max="100" value="'+faderLevel+'"data-rangeslider data-orientation="vertical"><p id="name-'+(i+1)+'" class="name">Channel '+(i+1)+'</p></div>'
 	}
 
 	$( "div#faders" ).html(input);

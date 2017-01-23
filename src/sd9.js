@@ -26,7 +26,8 @@ var sd9Console = {
 				{ // aux 4 send
 					"send_level" : -21,
 				},
-			]
+			],
+			'mute' : 1
 		},
 		{
 			"Channel_Input" : {
@@ -46,7 +47,8 @@ var sd9Console = {
 				{ // aux 4 send
 					"send_level" : -150,
 				},
-			]
+			],
+			'mute' : 1
 		},
 		{
 			"Channel_Input" : {
@@ -66,7 +68,8 @@ var sd9Console = {
 				{ // aux 4 send
 					"send_level" : -3,
 				},
-			]
+			],
+			'mute' : 0
 		},
 		// channel 4
 		{
@@ -87,7 +90,8 @@ var sd9Console = {
 				{ // aux 4 send
 					"send_level" : -11,
 				},
-			]
+			],
+			'mute' : 1
 		},
 		// channel 4
 		{
@@ -108,7 +112,8 @@ var sd9Console = {
 				{ // aux 4 send
 					"send_level" : -11,
 				},
-			]
+			],
+			'mute' : 0
 		},
 		// channel 4
 		{
@@ -129,7 +134,8 @@ var sd9Console = {
 				{ // aux 4 send
 					"send_level" : -11,
 				},
-			]
+			],
+			'mute' : 0
 		}
 	],
 
@@ -252,11 +258,26 @@ var messageCallback = function(message)
 	if (patt.test(address))
 	{
 		try {
-			console.log("a");
 			sendMessage(address.slice(0,-2), sd9Console["Console"]["Input_Channels"]);
 		}
 		catch (err) {
 
+		}
+	}
+
+	patt = new RegExp(/(\/Input_Channels\/)[0-9]*(\/mute)/, '');
+	if (patt.test(address))
+	{
+		if (address.slice(-1) === "?")
+		{
+			split = address.split("/");
+			try {
+				// [ '', 'Input_Channels', '2', 'mute', '?' ]
+				sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]]);
+			}
+			catch (err) {
+
+			}
 		}
 	}
 };

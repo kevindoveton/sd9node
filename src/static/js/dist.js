@@ -38,7 +38,7 @@ function createFaders(channels) {
     var input = "";
     var faderLevel = 0;
     for (i = 0; i < channels; i++) {
-        input += '<div class="fader"><input id="fader-' + (i + 1) + '" type="range" min="0" max="100" value="' + faderLevel + '"data-rangeslider data-orientation="vertical"><p id="name-' + (i + 1) + '" class="name">Channel ' + (i + 1) + '</p><div id="mute-' + (i + 1) + '" class="mute"><p></p></div></div>';
+        input += '<div class="fader"><input id="fader-' + (i + 1) + '" type="range" min="0" max="100" value="' + faderLevel + '"data-rangeslider data-orientation="vertical"><p id="name-' + (i + 1) + '" class="name">Channel ' + (i + 1) + "</p></div>";
     }
     $("div#faders").html(input);
     createRanges();
@@ -119,8 +119,8 @@ $(function() {
     });
     socket.on("mute/input", function(data) {
         data = JSON.parse(data);
-        $("#mute-" + data.c).toggleClass("mute", !!data.m);
-        $("#mute-" + data.c).toggleClass("unmute", !data.m);
+        console.log(data);
+        $("#js-rangeslider-" + (data.c - 1)).find(".rangeslider__handle").first().toggleClass("mute", !!data.m);
     });
     screenSizeUpdate();
 });
@@ -151,12 +151,7 @@ function createRanges() {
     $element.rangeslider({
         polyfill: false,
         onInit: function() {},
-        onSlide: function(position, value) {
-            var ch = this.$element[0].id.substr(6);
-            volume = -(Math.pow(10, -((value - 100) / 100) * Math.log10(1 + soundMin)) - 1);
-            volume = Math.round(volume * 100) / 100;
-            $("#mute-" + ch + " p").text(volume);
-        },
+        onSlide: function(position, value) {},
         onSlideEnd: function(position, value) {
             var auxnumber = window.location.pathname.substring(5).replace(/[^\d.]/g, "");
             var ch = this.$element[0].id.substr(6);
