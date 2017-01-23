@@ -40,7 +40,7 @@ $(function() {
 		}
 	});
 
-	socket.on('volume/aux/'+auxnumber, function (data) {
+	socket.on('volume/aux/'+auxnumber, function (data) { // +auxnumber may not be needed
 		data = JSON.parse(data);
 
 		if (data["a"] == auxnumber) {
