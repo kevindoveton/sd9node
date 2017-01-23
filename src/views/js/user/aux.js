@@ -34,14 +34,15 @@ $(function() {
 	});
 
 	socket.on('name/aux', function (data) {
-		console.log('Incoming message:', data);
+		// console.log('Incoming message:', data);
 		if (auxnumber == data["a"]) {
 			$("#auxName").text(data["n"])
 		}
 	});
 
-	socket.on('volume/aux', function (data) {
+	socket.on('volume/aux/'+auxnumber, function (data) {
 		data = JSON.parse(data);
+
 		if (data["a"] == auxnumber) {
 			updateFaderLevel(data["c"], data["v"]);
 		}
@@ -49,7 +50,6 @@ $(function() {
 
 	socket.on('mute/input', function(data) {
 		data = JSON.parse(data);
-		console.log(data);
 		$("#js-rangeslider-"+(data.c - 1)).find(".rangeslider__handle").first().toggleClass("mute", !!data.m);
 		// $("#mute-"+data.c).toggleClass("mute", !!data.m);
 		// $("#mute-"+data.c).toggleClass("unmute", !data.m);

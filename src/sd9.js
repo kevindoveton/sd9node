@@ -203,7 +203,6 @@ var messageCallback = function(message)
 	if (patt.test(address))
 	{
 		split = address.split("/");
-		console.log(split);
 		if (address.slice(-1) !== "?")
 		{
 			if (sd9Console[split[1]][split[2]-1][split[3]][split[4]] != undefined)
@@ -238,7 +237,6 @@ var messageCallback = function(message)
 				sendMessage(address.slice(0,-2), sd9Console[split[1]][split[2]-1][split[3]][split[4]-1][split[5]]);
 			}
 			catch (err) {
-
 			}
 		}
 	}

@@ -23,7 +23,6 @@ exports.cb = function(message)
 	}
 
 	// input channel mute
-	console.log(address);
 	patt = new RegExp(/(\/Input_Channels\/)[0-9]*(\/mute)/, '');
 	if (patt.test(address))
 	{
