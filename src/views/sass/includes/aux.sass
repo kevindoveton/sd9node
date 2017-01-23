@@ -1,5 +1,7 @@
 $faderWidth : 7rem
 
+@import "./range"
+
 .faders
 	display: flex
 	align-items: center
@@ -10,13 +12,11 @@ $faderWidth : 7rem
 	display: inline-block
 	min-width: $faderWidth
 	max-width: $faderWidth
-	margin-left: 1em
-	margin-right: 1em
+	margin-left: 1rem
+	margin-right: 2rem
 	display: block
-	// overflow: visible
 
 .fader::after
-	// overflow: visible/
 	display: block
 	content: ''
 	height: 100%
@@ -25,8 +25,10 @@ $faderWidth : 7rem
 	left: 0
 	width: 120%
 	z-index: -1
-	// margin-right: 10px
 	border-right: 1px solid transparentize(#666, 0.5)
+
+.fader:last-of-type::after
+	border-right-color: rgba(0,0,0,0)
 
 .mute
 	background-color: #ff0000
@@ -35,7 +37,7 @@ $faderWidth : 7rem
 	background-color: #00ff00
 
 .unmute, .mute
-	height: 2em
+	height: 3rem
 	width: $faderWidth
 	text-align: center
 	display: flex
@@ -72,7 +74,7 @@ $faderWidth : 7rem
 	position: absolute
 	right: 0
 	top: 0
-	height: 534px
+	height: 80vh
 
 	span
 		position: absolute
@@ -80,7 +82,7 @@ $faderWidth : 7rem
 		margin: 0
 		padding: 0
 
-div.faderNumbers span:nth-of-type(1)
+.faderNumbers span:nth-of-type(1)
 	top: 0
 
 .faderNumbers span:nth-of-type(2)
