@@ -1,21 +1,45 @@
-// vendor
-const express = require('express');
-const app = express();
-const server = require('http').createServer(app);
+// // vendor
+// const express = require('express');
+// const app = express();
+// const server = require('http').createServer(app);
+//
+// // user
+// const routes = require("./routes");
+// const osc = require("./osc");
+// const oscCallback = require('./oscCallback');
+// const sockets = require('./sockets')(server);
+//
+// // routes
+// routes(app, express);
+//
+// // initialise osc
+// osc.init(oscCallback.cb);
+//
+// // server
+// server.listen(8000, function() {
+// 	console.log("Server listening on " + 8000);
+// });
 
-// user
-const routes = require("./routes");
-const osc = require("./osc");
-const oscCallback = require('./oscCallback');
-const sockets = require('./sockets')(server);
+module.exports = function() {
+	// vendor
+	const express = require('express');
+	const app = express();
+	const server = require('http').createServer(app);
 
-// routes
-routes(app, express);
+	// user
+	const routes = require("./routes");
+	const osc = require("./osc");
+	const oscCallback = require('./oscCallback');
+	const sockets = require('./sockets')(server);
 
-// initialise osc
-osc.init(oscCallback.cb);
+	// routes
+	routes(app, express);
 
-// server
-server.listen(8000, function() {
-	console.log("Server listening on " + 8000);
-});
+	// initialise osc
+	osc.init(oscCallback.cb);
+
+	// server
+	server.listen(8000, function() {
+		console.log("Server listening on " + 8000);
+	});
+}

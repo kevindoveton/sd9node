@@ -12,13 +12,13 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'static/html/server.html'),
+    pathname: path.join(__dirname, 'server_static/html/index.html'),
     protocol: 'file:',
     slashes: true,
     fullscreen: true
   }))
 
-  win.setFullScreen(true);
+  win.setFullScreen(false);
 
   // Open the DevTools.
   // win.webContents.openDevTools()
@@ -56,3 +56,5 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+// vendor
+// const server = require('./app')();
