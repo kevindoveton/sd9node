@@ -19,7 +19,8 @@
     "gulp-pug": "^3.0.3",
     "gulp-sass": "^2.0.4",
     "gulp-uglify": "^2.0.0",
-    "pump": "^1.0.1"
+    "pump": "^1.0.1",
+	"electron": "^1.4.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
