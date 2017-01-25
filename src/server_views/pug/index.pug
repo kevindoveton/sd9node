@@ -9,7 +9,7 @@ html
 		link(rel="stylesheet", href="../css/dist.css")
 
 		//- JS
-		script(type="text/javascript", src="../js/vendor.js")
+		script() window.$ = window.jQuery = require('jquery');
 		script(type="text/javascript", src="../js/dist.js")
 
 	body
@@ -18,4 +18,17 @@ html
 			h2 some informative text
 
 		div(style="padding:1em")
-			span.btn Connect
+			span.btn#connectBtn Connect
+
+
+		div.settings
+			label Ip Address
+			input(type="text", id="ipaddr")
+
+			label RX Port
+			input(type="text", id="rxport")
+
+			label TX Port
+			input(type="text", id="txport")
+
+		span.openSettings
