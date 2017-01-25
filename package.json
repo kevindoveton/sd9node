@@ -4,14 +4,15 @@
   "description": "A middle man for the SD9 console, providing multiple clients access",
   "main": "app.js",
   "dependencies": {
+    "electron": "^1.4.15",
     "express": "^4.14.0",
-    "express-ws": "^2.0.0",
-    "http": "^0.0.0",
-    "httpdispatcher": "^1.0.0",
+    "jquery": "^3.1.1",
+    "node-gyp": "^3.5.0",
     "osc": "^2.1.0",
     "socket.io": "^1.4.8"
   },
   "devDependencies": {
+    "electron-rebuild": "^1.5.7",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-concat": "^2.6.1",
@@ -19,8 +20,7 @@
     "gulp-pug": "^3.0.3",
     "gulp-sass": "^2.0.4",
     "gulp-uglify": "^2.0.0",
-    "pump": "^1.0.1",
-	"electron": "^1.4.5"
+    "pump": "^1.0.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
