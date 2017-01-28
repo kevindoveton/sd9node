@@ -8,26 +8,28 @@ html
 		link(rel="stylesheet", href="../css/dist.css")
 
 		//- JS
-		//- script window.$ = window.jQuery = require('jquery');
+		script window.$ = window.jQuery = require('jquery');
 		script(type="text/javascript", src="../js/dist.js")
 
 	body
 		div.title
 			h1 DigiControl
 			h2 some informative text
-
+		
 		div(style="padding:1em")
 			span.btn#connectBtn Connect
 
 
-		div.settings
-			label Ip Address
-			input(type="text", id="ipaddr")
+		div.settingsContainer
+			div.settings
+				h1 Settings
+				input(type="text", id="ipaddr")
+				label Ip Address
 
-			label RX Port
-			input(type="text", id="rxport")
+				input(type="text", id="rxport")
+				label RX Port
 
-			label TX Port
-			input(type="text", id="txport")
+				input(type="text", id="txport")
+				label TX Port
 
 		span.openSettings
