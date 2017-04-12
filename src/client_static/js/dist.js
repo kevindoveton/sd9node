@@ -103,6 +103,7 @@ $(function() {
     });
     socket.on("name/input", function(data) {
         data = JSON.parse(data);
+        console.log(data);
         updateFaderName(data["c"], data["n"]);
     });
     socket.on("name/aux", function(data) {

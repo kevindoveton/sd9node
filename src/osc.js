@@ -4,20 +4,20 @@ exports.init = function(messageCallback)
 	var osc = require("osc")
 
 	// SD9 Server
-	// udp = new osc.UDPPort({
-	//     localAddress: "0.0.0.0",
-	//     localPort: 5050 ,
-	//     remoteAddress: "192.168.2.5",
-	//     remotePort: 6050
-	// });
-
-	// local
 	udp = new osc.UDPPort({
 	    localAddress: "0.0.0.0",
-	    localPort: 6050 ,
-	    remoteAddress: "127.0.0.1",
-	    remotePort: 5050
+	    localPort: 5050 ,
+	    remoteAddress: "192.168.2.5",
+	    remotePort: 6050
 	});
+
+	// local
+	// udp = new osc.UDPPort({
+	//     localAddress: "0.0.0.0",
+	//     localPort: 6050 ,
+	//     remoteAddress: "127.0.0.1",
+	//     remotePort: 5050
+	// });
 
 	udp.on("ready", function () {
 	    var ipAddresses = getIPAddresses();

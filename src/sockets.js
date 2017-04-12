@@ -2,8 +2,8 @@ const oscFunctions = require('./oscFunctions');
 // TODO request this from console...
 var consoleConfig = {
 	"name" : "consoleConfig",
-	"channelInputs" : 6,
-	"auxOutputs" : 4
+	"channelInputs" : 40,
+	"auxOutputs" : 12
 };
 
 var io;
@@ -34,7 +34,7 @@ module.exports = function(server) {
 					oscFunctions.requestAuxNameUpdate(1, consoleConfig['auxOutputs']);
 				}
 				else if (data == "inputNames") {
-					oscFunctions.requestInputNameUpdate(1, consoleConfig['auxOutputs']);
+					oscFunctions.requestInputNameUpdate(1, consoleConfig['channelInputs']);
 				}
 				else if (data == "consoleConfig") {
 					oscFunctions.requestConsoleUpdate();
