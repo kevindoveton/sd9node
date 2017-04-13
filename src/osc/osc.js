@@ -1,14 +1,14 @@
-var udp
+var udp = null;
+var osc = require("osc");
+
 exports.init = function(messageCallback)
 {
-	var osc = require("osc")
-
 	// SD9 Server
 	udp = new osc.UDPPort({
-	    localAddress: "0.0.0.0",
-	    localPort: 5050 ,
-	    remoteAddress: "192.168.2.5",
-	    remotePort: 6050
+		localAddress: "0.0.0.0",
+		localPort: 5050 ,
+		remoteAddress: "192.168.2.5",
+		remotePort: 6050
 	});
 
 	// local
@@ -20,20 +20,20 @@ exports.init = function(messageCallback)
 	// });
 
 	udp.on("ready", function () {
-	    var ipAddresses = getIPAddresses();
-	    console.log("Listening for OSC over UDP.");
-	    ipAddresses.forEach(function (address) {
-	        console.log(" Host:", address + ", Port:", udp.options.localPort);
-	    });
-	    console.log("Broadcasting OSC over UDP to", udp.options.remoteAddress + ", Port:", udp.options.remotePort);
+		var ipAddresses = getIPAddresses();
+		console.log("Listening for OSC over UDP.");
+		ipAddresses.forEach(function (address) {
+			console.log(" Host:", address + ", Port:", udp.options.localPort);
+		});
+		console.log("Broadcasting OSC over UDP to", udp.options.remoteAddress + ", Port:", udp.options.remotePort);
 	});
 
 	udp.on("message", function (oscMessage) {
-	    messageCallback(oscMessage);
+		messageCallback(oscMessage);
 	});
 
 	udp.on("error", function (err) {
-	    console.log(err);
+		console.log(err);
 	});
 
 	udp.open();
@@ -43,9 +43,9 @@ exports.sendMessage = function(address, message)
 {
 	// console.log(address, message);
 	var msg = {
-        address: address,
-        args: [message]
-    };
+		address: address,
+		args: [message]
+	};
 
 	udp.send(msg);
 }

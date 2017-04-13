@@ -1,5 +1,7 @@
 const oscFunctions = require('./oscFunctions');
+
 // TODO request this from console...
+// or use the desk layout??
 var consoleConfig = {
 	"name" : "consoleConfig",
 	"channelInputs" : 40,
