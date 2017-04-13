@@ -7,7 +7,7 @@ exports.init = function(messageCallback)
 	udp = new osc.UDPPort({
 		localAddress: "0.0.0.0",
 		localPort: 5050 ,
-		remoteAddress: "192.168.2.5",
+		remoteAddress: "0.0.0.0",
 		remotePort: 6050
 	});
 

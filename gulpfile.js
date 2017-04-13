@@ -58,7 +58,7 @@ var server_paths = new function() {
  */
 gulp.task('client_pug', function () {
 	pump([
-		gulp.src(client_paths.pug + '*.pug'),
+		gulp.src(client_paths.pug + '**/*.pug'),
 		pug(),
 		gulp.dest(client_paths.html_dist)
 	]);
@@ -67,7 +67,7 @@ gulp.task('client_pug', function () {
 
 gulp.task('server_pug', function () {
 	pump([
-		gulp.src(server_paths.pug + '*.pug'),
+		gulp.src(server_paths.pug + '**/*.pug'),
 		pug(),
 		gulp.dest(server_paths.html_dist)
 	]);
@@ -79,8 +79,7 @@ gulp.task('server_pug', function () {
 gulp.task('client_js', function(cb) {
 	// user
 	pump([
-		gulp.src(client_paths.js_build + 'user/*.js'),
-		concat('dist.js'),
+		gulp.src(client_paths.js_build + 'user/**/*.js'),
 		uglify({
 			mangle: false,
 			compress: false,
@@ -88,6 +87,7 @@ gulp.task('client_js', function(cb) {
 				beautify: true
 			}
 		}),
+		concat('dist.js'),
 		gulp.dest(client_paths.js_dist)
 	], function(e) {
 		if (e !== undefined)
@@ -98,9 +98,10 @@ gulp.task('client_js', function(cb) {
 
 	// vendor
 	pump([
-		gulp.src(mainBowerFiles()),
+		gulp.src(mainBowerFiles({
+			filter: '**/*.js'
+		})),
 		sourcemaps.init(),
-		concat('vendor.js'),
 		uglify({
 			output: {
 				beautify: true,
@@ -108,7 +109,8 @@ gulp.task('client_js', function(cb) {
 			},
 			mangle: false,
 			compress: false,
-		}),
+		}),  
+        concat('vendor.js'),
 		sourcemaps.write('maps'),
 		gulp.dest(client_paths.js_dist)
 	], function(e) {
@@ -124,7 +126,7 @@ gulp.task('client_js', function(cb) {
 gulp.task('server_js', function() {
 	// user
 	pump([
-		gulp.src(server_paths.js_build + 'user/*.js'),
+		gulp.src(server_paths.js_build + 'user/**/*.js'),
 		concat('dist.js'),
 		uglify({
 			mangle: false,
@@ -143,7 +145,7 @@ gulp.task('server_js', function() {
 
 	// vendor
 	pump([
-		gulp.src(server_paths.js_build + 'vendor/*.js'),
+		gulp.src(server_paths.js_build + 'vendor/**/*.js'),
 		concat('vendor.js'),
 		uglify({
 			mangle: false,
@@ -168,7 +170,7 @@ gulp.task('server_js', function() {
  */
 gulp.task('client_sass', function () {
 	pump([
-		gulp.src(client_paths.sass + '*.sass'),
+		gulp.src(client_paths.sass + '**/*.sass'),
 		sass({
 			includePaths: [client_paths.sass],
 			outputStyle: 'compressed'
@@ -196,7 +198,7 @@ gulp.task('client_sass', function () {
 
 gulp.task('server_sass', function () {
 	pump([
-		gulp.src(server_paths.sass + '*.sass'),
+		gulp.src(server_paths.sass + '**/*.sass'),
 		sass({
 			includePaths: [server_paths.sass],
 			outputStyle: 'compressed'
@@ -228,13 +230,13 @@ gulp.task('server_sass', function () {
  */
 gulp.task('client_watch', function () {
 	gulp.watch(client_paths.sass + '**/*.sass', ['client_sass']);
-	gulp.watch(client_paths.pug + '*.pug', ['client_pug']);
+	gulp.watch(client_paths.pug + '**/*.pug', ['client_pug']);
 	gulp.watch(client_paths.js_build + '**/*.js', ['client_js']);
 });
 
 gulp.task('server_watch', function () {
 	gulp.watch(server_paths.sass + '**/*.sass', ['server_sass']);
-	gulp.watch(server_paths.pug + '*.pug', ['server_pug']);
+	gulp.watch(server_paths.pug + '**/*.pug', ['server_pug']);
 	gulp.watch(server_paths.js_build + '**/*.js', ['server_js']);
 });
 

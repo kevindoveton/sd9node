@@ -1,11 +1,12 @@
 const path = require('path');
 const r = path.join(__dirname, '../');
+const staticPath = path.join(r, 'client_static');
 module.exports = function(app, express) {
 	// static files
-	app.use('/static', express.static('client_static'));
+	app.use('/static', express.static(staticPath));
 
 	// aux home page
-	app.get('/', function (req, res) {
+	app.get('*', function (req, res) {
 		res.sendFile('./client_static/html/index.html', { root: r });
 	});
 

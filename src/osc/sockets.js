@@ -29,6 +29,11 @@ module.exports = function(server) {
 				socket.broadcast.to("volume/aux/"+_data["a"]).emit("volume/aux", data);
 				oscFunctions.updateAuxVolume(_data["a"], _data["c"], _data["v"]);
 			});
+			
+			socket.on("engineer", function(data) {
+				groupEmit('engineer', data)
+				// socket.broadcast.to("engineer").emit("engineer", data);
+			});
 
 			// client has requested updates
 			socket.on("request", function(data) {
@@ -47,6 +52,11 @@ module.exports = function(server) {
 				else if (data.substr(0,19) == "inputAuxLevelVolume") {
 					oscFunctions.requestInputLevelUpdate(data.substr(19), 1, consoleConfig['channelInputs']);
 				}
+			});
+			
+			socket.on('disconnect', function(data) {
+				socket.emit('disconnect');
+				socket.disconnect();
 			});
 
 			// once connected and rooms joined, send some settings

@@ -6,24 +6,37 @@ angular.module('DigiControl', [
 	'DigiControl.filters',
 	'DigiControl.services',
 	'DigiControl.directives',
-	'ui.router'
-]).config(function ($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
+	'ui.router',
+	'btford.socket-io',
+	'rzModule'
+]).config(function ($stateProvider, $urlRouterProvider) {
 	// ui router
 	$stateProvider.state({
 		name: 'home',
 		url: '/home',
-		templateUrl: '/html/partials/home.html',
+		templateUrl: '/static/html/partials/home.html',
 		controller: 'HomeCtrl'
 	});
 	
 	$stateProvider.state({
 		name: 'aux',
-		url: '/aux',
-		templateUrl: '/html/partials/aux.html',
+		url: '/aux/:auxId',
+		templateUrl: '/static/html/partials/aux.html',
 		controller: 'AuxCtrl',
-		params: {
-			aux: null
-		}
+	});
+	
+	$stateProvider.state({
+		name: 'engFaders',
+		url: '/eng/faders/{id:int}',
+		templateUrl: '/static/html/partials/eng_faders.html',
+		controller: 'EngFaderCtrl',
+	})
+	
+	$stateProvider.state({
+		name: 'eng',
+		url: '/eng/select',
+		templateUrl: '/static/html/partials/eng_select.html',
+		controller: 'EngSelectCtrl'
 	});
 	
 	
@@ -33,5 +46,4 @@ angular.module('DigiControl', [
 	
 	// localStorageServiceProvider.setPrefix('DigiControl');
 	// localStorageServiceProvider.setStorageCookie(10*365, '/', false); // expire in ten years
-
 });

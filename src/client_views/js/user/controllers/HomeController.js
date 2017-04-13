@@ -1,14 +1,26 @@
-String.prototype.hashCode = function() {
-	var hash = 0, i, chr;
-	if (this.length === 0) return hash;
-	for (i = 0; i < this.length; i++) {
-		chr   = this.charCodeAt(i);
-		hash  = ((hash << 5) - hash) + chr;
-		hash |= 0; // Convert to 32bit integer
-	}
-	return hash;
-};
-
-angular.module('DigiControl.controllers').controller('HomeCtrl', function($scope, localStorageService, $state) {	
-
+angular.module('DigiControl.controllers').controller('HomeCtrl', function($scope, $state, socket) {
+	
+	socket.on('connect', function() {
+		// Connected, let's sign-up to receive messages for this room
+		socket.emit('subscribe', "announcements");
+		socket.emit('subscribe', "name/aux");
+		
+		// request all aux names
+		socket.emit("request", "auxNames");
+	});
+	
+	socket.on('announcements', function (data) {
+		$scope.aux = [];
+		data = JSON.parse(data);	
+		for (var i = 1; i <= data.auxOutputs; i++) {
+			$scope.aux.push({name: 'Output '+i, id: i});
+		}
+	});
+	
+	socket.on('name/aux', function (data) {
+		data = JSON.parse(data);
+		console.log(data);
+		$scope.aux[data['a']-1].name = data['n'];
+	});
+	
 });
