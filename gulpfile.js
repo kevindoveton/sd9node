@@ -9,6 +9,8 @@ var gulp = require('gulp'),
   sass = require('gulp-sass'),
   uglify = require('gulp-uglify'),
   pump = require('pump'),
+  mainBowerFiles = require('main-bower-files'),
+  sourcemaps = require('gulp-sourcemaps'),
   concat = require('gulp-concat');
 
 /*
@@ -74,7 +76,7 @@ gulp.task('server_pug', function () {
 
 
 // JS
-gulp.task('client_js', function() {
+gulp.task('client_js', function(cb) {
 	// user
 	pump([
 		gulp.src(client_paths.js_build + 'user/*.js'),
@@ -96,22 +98,26 @@ gulp.task('client_js', function() {
 
 	// vendor
 	pump([
-		gulp.src(client_paths.js_build + 'vendor/*.js'),
+		gulp.src(mainBowerFiles()),
+		sourcemaps.init(),
 		concat('vendor.js'),
 		uglify({
+			output: {
+				beautify: true,
+				comments: true
+			},
 			mangle: false,
 			compress: false,
-			output: {
-				beautify: false
-			}
 		}),
+		sourcemaps.write('maps'),
 		gulp.dest(client_paths.js_dist)
 	], function(e) {
-		if (e !== undefined)
-		{
+		if (e !== undefined) {
 			console.log(e);
 		}
+		cb(null);
 	});
+
 	return;
 });
 
