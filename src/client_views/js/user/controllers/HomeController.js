@@ -1,15 +1,9 @@
-angular.module('DigiControl.controllers').controller('HomeCtrl', function($scope, $state, socket) {
+angular.module('DigiControl.controllers').controller('HomeCtrl', function($scope, $state, SocketHelper) {
+
+	SocketHelper.RequestConfig();
+	SocketHelper.RequestAuxNames();
 	
-	socket.on('connect', function() {
-		// Connected, let's sign-up to receive messages for this room
-		socket.emit('subscribe', "announcements");
-		socket.emit('subscribe', "name/aux");
-		
-		// request all aux names
-		socket.emit("request", "auxNames");
-	});
-	
-	socket.on('announcements', function (data) {
+	$scope.$on('socket:announcements', function (ev, data) {
 		$scope.aux = [];
 		data = JSON.parse(data);	
 		for (var i = 1; i <= data.auxOutputs; i++) {
@@ -17,10 +11,9 @@ angular.module('DigiControl.controllers').controller('HomeCtrl', function($scope
 		}
 	});
 	
-	socket.on('name/aux', function (data) {
+	$scope.$on('socket:name/aux', function (ev, data) {
 		data = JSON.parse(data);
 		console.log(data);
 		$scope.aux[data['a']-1].name = data['n'];
 	});
-	
 });

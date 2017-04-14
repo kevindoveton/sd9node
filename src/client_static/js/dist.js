@@ -9,7 +9,7 @@ angular.module("DigiControl", [ "DigiControl.controllers", "DigiControl.filters"
     });
     $stateProvider.state({
         name: "aux",
-        url: "/aux/:auxId",
+        url: "/aux/:id",
         templateUrl: "/static/html/partials/aux.html",
         controller: "AuxCtrl"
     });
@@ -54,39 +54,36 @@ Array.prototype.subarray = function(start, end) {
     return this.slice(start, this.length + 1 - end * -1);
 };
 
-angular.module("DigiControl.controllers").controller("AuxCtrl", function($scope, $state, socket) {
-    const AuxId = $state.params.auxId;
+angular.module("DigiControl.controllers").controller("AuxCtrl", function($scope, $state, SocketHelper, socket) {
+    const AuxId = $state.params.id;
+    SocketHelper.RequestConfig();
+    SocketHelper.RequestInputNames();
+    SocketHelper.RequestAuxVolume();
     const StepArray = [ -150, -60, -58, -54, -53.5, -53, -52, -51, -50, -49, -48, -46, -45, -44, -42, -40, -38, -36, -35, -34, -33, -32, -31, -30, -29, -28, -27, -26, -25, -24, -24, -22, -21, -20, -19, -18, -17, -16, -15, -14, -13.5, -13, -12.5, -12, -11.5, -11, -10.5, -10, -9.5, -9.2, -8.8, -8.4, -7.8, -7.4, -6.9, -6.6, -6.3, -6, -5.75, -5.5, -5.25, -5, -4.75, -4.5, -3.25, -2.6, -2.2, -1.8, -1.5, -1.3, -1, -.7, -.4, -.2, 0, .2, .4, .7, 1, 1.3, 1.6, 2, 2.4, 2.7, 3, 3.5, 4, 4.5, 5, 5.25, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10 ];
+    $scope.StepArray = StepArray;
     function SliderEnd(id, value, highValue, pointerType) {
-        console.log(id, value);
+        SocketHelper.SetAuxVolume(AuxId, id, value);
     }
-    $scope.SliderOptions = {
-        vertical: true,
-        onEnd: SliderEnd,
-        hidePointerLabels: true,
-        hideLimitLabels: true,
-        stepsArray: StepArray
-    };
+    $scope.SliderEnd = SliderEnd;
     $scope.faders = [];
     if (AuxId == "") {
         $state.go("home");
     }
-    socket.on("connect", function() {
-        socket.emit("request", "consoleConfig");
-        socket.emit("subscribe", "announcements");
-        socket.emit("subscribe", "name/input");
-        socket.emit("subscribe", "name/aux");
-        socket.emit("subscribe", "volume/aux/" + AuxId);
-        socket.emit("subscribe", "mute/input");
-        socket.emit("request", "inputAuxLevelVolume" + AuxId);
-        socket.emit("request", "inputNames");
-        socket.emit("request", "auxNames");
-        socket.emit("request", "inputMutes");
+    $scope.$on("socket:engineer", function(ev, data) {
+        $state.transitionTo($state.current, {
+            id: data
+        }, {
+            reload: true,
+            inherit: false,
+            notify: true
+        });
     });
-    setInterval(function() {
-        socket.emit("request", "inputMutes");
-    }, 2e4);
-    socket.on("announcements", function(data) {
+    $scope.$on("socket:name/input", function(ev, data) {
+        data = JSON.parse(data);
+        $scope.faders[data.c - 1].name = data.n;
+    });
+    $scope.$on("socket:announcements", function(ev, data) {
+        console.log(data);
         data = JSON.parse(data);
         if (data["name"] == "consoleConfig") {
             for (var i = 1; i <= data.channelInputs; i++) {
@@ -98,23 +95,12 @@ angular.module("DigiControl.controllers").controller("AuxCtrl", function($scope,
             }
         }
     });
-    socket.on("name/input", function(data) {
+    $scope.$on("socket:volume/aux", function(ev, data) {
         data = JSON.parse(data);
-        console.log(data);
-        $scope.faders[data.c - 1].name = data.n;
-    });
-    socket.on("name/aux", function(data) {
-        if (AuxId == data["a"]) {}
-    });
-    socket.on("volume/aux/" + AuxId, function(data) {
-        data = JSON.parse(data);
-        searchArrayValues(data.v, StepArray);
+        data.v = searchArrayValues(data.v, StepArray);
         if (data["a"] == AuxId) {
             $scope.faders[data.c - 1].value = data.v;
         }
-    });
-    socket.on("mute/input", function(data) {
-        data = JSON.parse(data);
     });
     function searchArrayValues(value, array) {
         if (array.length == 1) {
@@ -154,56 +140,6 @@ angular.module("DigiControl.controllers").controller("EngFaderCtrl", function($s
     if (AuxId == "") {
         $state.go("home");
     }
-    socket.on("connect", function() {
-        socket.emit("request", "consoleConfig");
-        socket.emit("subscribe", "announcements");
-        socket.emit("subscribe", "name/input");
-        socket.emit("subscribe", "volume/aux/" + AuxId);
-        socket.emit("subscribe", "mute/input");
-        socket.emit("request", "inputAuxLevelVolume" + AuxId);
-        socket.emit("request", "inputNames");
-        socket.emit("request", "inputMutes");
-        socket.emit("subscribe", "engineer");
-    });
-    socket.on("engineer", function(data) {
-        $state.transitionTo($state.current, {
-            id: data
-        }, {
-            reload: true,
-            inherit: false,
-            notify: true
-        });
-    });
-    socket.on("announcements", function(data) {
-        data = JSON.parse(data);
-        if (data["name"] == "consoleConfig") {
-            for (var i = 1; i <= data.channelInputs; i++) {
-                $scope.faders.push({
-                    id: i,
-                    name: "",
-                    value: 0
-                });
-            }
-        }
-    });
-    socket.on("name/input", function(data) {
-        data = JSON.parse(data);
-        console.log(data);
-        $scope.faders[data.c - 1].name = data.n;
-    });
-    socket.on("name/aux", function(data) {
-        if (AuxId == data["a"]) {}
-    });
-    socket.on("volume/aux/" + AuxId, function(data) {
-        data = JSON.parse(data);
-        searchArrayValues(data.v, StepArray);
-        if (data["a"] == AuxId) {
-            $scope.faders[data.c - 1].value = data.v;
-        }
-    });
-    socket.on("mute/input", function(data) {
-        data = JSON.parse(data);
-    });
     function searchArrayValues(value, array) {
         if (array.length == 1) {
             return array[0];
@@ -216,14 +152,11 @@ angular.module("DigiControl.controllers").controller("EngFaderCtrl", function($s
         }
     }
 });
-angular.module("DigiControl.controllers").controller("EngSelectCtrl", function($scope, $state, socket) {
-    socket.on("connect", function() {
-        socket.emit("subscribe", "announcements");
-        socket.emit("subscribe", "name/aux");
-        socket.emit("request", "auxNames");
-    });
-    socket.on("announcements", function(data) {
+angular.module("DigiControl.controllers").controller("EngSelectCtrl", function($scope, $state, SocketHelper, socket) {
+    SocketHelper.RequestConfig();
+    $scope.$on("socket:announcements", function(ev, data) {
         $scope.aux = [];
+        console.log(data);
         data = JSON.parse(data);
         for (var i = 1; i <= data.auxOutputs; i++) {
             $scope.aux.push({
@@ -232,22 +165,20 @@ angular.module("DigiControl.controllers").controller("EngSelectCtrl", function($
             });
         }
     });
-    socket.on("name/aux", function(data) {
-        data = JSON.parse(data);
+    $scope.$on("socket:name/aux", function(ev, data) {
         console.log(data);
+        data = JSON.parse(data);
         $scope.aux[data["a"] - 1].name = data["n"];
     });
     $scope.SelectMonitor = function(id) {
         socket.emit("engineer", id);
+        SocketHelper.SoloAux(id, 1);
     };
 });
-angular.module("DigiControl.controllers").controller("HomeCtrl", function($scope, $state, socket) {
-    socket.on("connect", function() {
-        socket.emit("subscribe", "announcements");
-        socket.emit("subscribe", "name/aux");
-        socket.emit("request", "auxNames");
-    });
-    socket.on("announcements", function(data) {
+angular.module("DigiControl.controllers").controller("HomeCtrl", function($scope, $state, SocketHelper) {
+    SocketHelper.RequestConfig();
+    SocketHelper.RequestAuxNames();
+    $scope.$on("socket:announcements", function(ev, data) {
         $scope.aux = [];
         data = JSON.parse(data);
         for (var i = 1; i <= data.auxOutputs; i++) {
@@ -257,7 +188,7 @@ angular.module("DigiControl.controllers").controller("HomeCtrl", function($scope
             });
         }
     });
-    socket.on("name/aux", function(data) {
+    $scope.$on("socket:name/aux", function(ev, data) {
         data = JSON.parse(data);
         console.log(data);
         $scope.aux[data["a"] - 1].name = data["n"];
@@ -545,32 +476,49 @@ app.directive("suggestion", function() {
         }
     };
 });
-angular.module("DigiControl").factory("HttpService", function($http, $q, localStorageService, $state) {
+angular.module("DigiControl").factory("HttpService", function($http, $q, localStorageService, $state) {});
+angular.module("DigiControl").factory("SocketHelper", function(socket) {
+    socket.on("connect", function() {
+        socket.emit("subscribe", "announcements");
+        socket.emit("subscribe", "engineer");
+        socket.emit("subscribe", "name/input");
+        socket.emit("subscribe", "name/input");
+        socket.emit("subscribe", "volume/aux");
+        socket.emit("subscribe", "mute/input");
+    });
     return {
-        gender: function(name) {
-            return new Promise(function(accept, reject) {
-                $http({
-                    method: "GET",
-                    url: "https://api.genderize.io/",
-                    params: {
-                        name: name
-                    }
-                }).then(function(success) {
-                    try {
-                        if (success.data.gender !== null) {
-                            accept(success.data.gender);
-                        } else {
-                            reject(false);
-                        }
-                    } catch (err) {
-                        console.warn(err);
-                        reject(false);
-                    }
-                });
-            });
+        RequestConfig: function() {
+            socket.emit("request", "consoleConfig");
+        },
+        RequestAuxVolume: function() {
+            socket.emit("request", "inputAuxLevelVolume");
+        },
+        RequestInputNames: function() {
+            socket.emit("subscribe", "name/input");
+            socket.emit("request", "inputNames");
+        },
+        RequestAuxNames: function() {
+            socket.emit("request", "auxNames");
+        },
+        SetAuxVolume: function(aux, channel, volume) {
+            socket.emit("volume/aux", JSON.stringify({
+                a: aux,
+                c: channel,
+                v: volume
+            }));
+        },
+        SoloAux: function(aux, value) {
+            socket.emit("auxsolo", aux);
         }
     };
 });
 angular.module("DigiControl").factory("socket", function(socketFactory) {
-    return socketFactory();
+    var socket = socketFactory();
+    socket.forward("announcements");
+    socket.forward("name/input");
+    socket.forward("name/aux");
+    socket.forward("volume/aux");
+    socket.forward("mute/input");
+    socket.forward("engineer");
+    return socket;
 });

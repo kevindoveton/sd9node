@@ -20,7 +20,7 @@ angular.module('DigiControl', [
 	
 	$stateProvider.state({
 		name: 'aux',
-		url: '/aux/:auxId',
+		url: '/aux/:id',
 		templateUrl: '/static/html/partials/aux.html',
 		controller: 'AuxCtrl',
 	});

@@ -38,68 +38,6 @@ angular.module('DigiControl.controllers').controller('EngFaderCtrl', function($s
 		$state.go('home');
 	}
 	
-	socket.on('connect', function() {
-		socket.emit("request", "consoleConfig");
-		socket.emit('subscribe', "announcements");
-		socket.emit('subscribe', "name/input");
-		socket.emit('subscribe', "volume/aux/"+AuxId);
-		socket.emit('subscribe', "mute/input");
-		socket.emit("request", "inputAuxLevelVolume"+AuxId);
-		socket.emit("request", "inputNames");
-		socket.emit("request", "inputMutes");
-		socket.emit('subscribe', 'engineer');
-	});
-	
-		socket.on('engineer', function(data) {
-			// $state.go($state.$current, {id: data}, {reload: true});
-			$state.transitionTo($state.current, {id: data}, {
-				reload: true,
-				inherit: false,
-				notify: true
-			});
-		})
-
-	// setInterval(function() {
-	// 	socket.emit("request", "inputMutes");
-	// }, 20000);
-	// 
-	socket.on('announcements', function (data) {
-		data = JSON.parse(data);
-		if (data["name"] == "consoleConfig") {
-			for (var i = 1; i <= data.channelInputs; i++) {
-				$scope.faders.push({id: i, name: '', value: 0})
-			}
-		}
-	});
-
-	socket.on('name/input', function (data) {
-		data = JSON.parse(data);
-		console.log(data);
-		$scope.faders[data.c-1].name = data.n;
-	});
-
-	socket.on('name/aux', function (data) {
-		// console.log('Incoming message:', data);
-		if (AuxId == data["a"]) {
-			// $("#auxName").text(data["n"])
-		}
-	});
-
-	socket.on('volume/aux/'+AuxId, function (data) { // +auxnumber may not be needed
-		data = JSON.parse(data);
-		searchArrayValues(data.v, StepArray)
-		if (data["a"] == AuxId) {
-			$scope.faders[data.c-1].value = data.v
-		}
-	});
-
-	socket.on('mute/input', function(data) {
-		data = JSON.parse(data);
-		// $("#js-rangeslider-"+(data.c - 1)).find(".rangeslider__handle").first().toggleClass("mute", !!data.m);
-		// $("#mute-"+data.c).toggleClass("mute", !!data.m);
-		// $("#mute-"+data.c).toggleClass("unmute", !data.m);
-	});
-	
 	
 	function searchArrayValues(value, array) {
 		if (array.length == 1) {

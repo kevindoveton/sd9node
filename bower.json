@@ -13,9 +13,10 @@
   "homepage": "https://github.com/kevindoveton/digiconode",
   "private": true,
   "dependencies": {
-    "angular-socket-io": "^0.7.0",
     "angular-ui-router": "^0.4.2",
     "angular": "^1.6.4",
-    "angularjs-slider": "^6.1.1"
+    "angularjs-slider": "^6.1.1",
+    "ng-socket": "^0.1.2",
+    "angular-socket-io": "^0.7.0"
   }
 }

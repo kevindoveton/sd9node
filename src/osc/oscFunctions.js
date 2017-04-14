@@ -34,3 +34,7 @@ exports.updateAuxVolume = function(auxNumber, channel, volume)
 	address = "/Input_Channels/"+(channel)+"/Aux_Send/"+(auxNumber)+"/send_level";
 	osc.sendMessage(address, volume);
 }
+
+exports.auxSolo = function(auxNumber, solo) {
+	osc.sendMessage('/Aux_Outputs/'+auxNumber+'/solo', solo)
+}

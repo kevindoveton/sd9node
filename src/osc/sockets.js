@@ -26,7 +26,7 @@ module.exports = function(server) {
 
 			socket.on("volume/aux", function(data) {
 				var _data = JSON.parse(data);
-				socket.broadcast.to("volume/aux/"+_data["a"]).emit("volume/aux", data);
+				socket.broadcast.to("volume/aux").emit("volume/aux", data);
 				oscFunctions.updateAuxVolume(_data["a"], _data["c"], _data["v"]);
 			});
 			
@@ -44,27 +44,33 @@ module.exports = function(server) {
 					oscFunctions.requestInputNameUpdate(1, consoleConfig['channelInputs']);
 				}
 				else if (data == "consoleConfig") {
-					oscFunctions.requestConsoleUpdate();
+					// oscFunctions.requestConsoleUpdate();
+					socket.emit("announcements", JSON.stringify(consoleConfig));
 				}
 				else if (data == "inputMutes") {
 					oscFunctions.requestInputMuteUpdate(1, 1, consoleConfig['channelInputs']);
 				}
-				else if (data.substr(0,19) == "inputAuxLevelVolume") {
-					oscFunctions.requestInputLevelUpdate(data.substr(19), 1, consoleConfig['channelInputs']);
+				else if (data == "inputAuxLevelVolume") {
+					for (var i = 1; i <= consoleConfig['auxOutputs']; i++) {
+						oscFunctions.requestInputLevelUpdate(i, 1, consoleConfig['channelInputs']);
+					}
 				}
 			});
 			
-			socket.on('disconnect', function(data) {
-				socket.emit('disconnect');
-				socket.disconnect();
-			});
-
+			socket.on('auxsolo', function(data) {
+				oscFunctions.auxSolo(data, 1);
+			})
+			
 			// once connected and rooms joined, send some settings
-			socket.emit("announcements", JSON.stringify(consoleConfig));
+			// socket.emit("announcements", JSON.stringify(consoleConfig));
 		});
 	}
 
 	this.groupEmit = function(group, data) {
+		// io.to(group).emit(data);
+
+		// io.sockets.in('announcements').emit('announcements', data);
+		console.log(group, data)
 		io.sockets.in(group).emit(group, data);
 	}
 
