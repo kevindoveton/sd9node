@@ -3,7 +3,7 @@ angular.module('DigiControl').factory('SocketHelper', function(socket) {
 		socket.emit('subscribe', "announcements");
 		socket.emit('subscribe', 'engineer');
 		socket.emit('subscribe', 'name/input')
-		socket.emit('subscribe', 'name/input')
+		socket.emit('subscribe', 'name/aux')
 		socket.emit('subscribe', "volume/aux");
 		socket.emit('subscribe', "mute/input");
 	});

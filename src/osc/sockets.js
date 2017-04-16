@@ -4,7 +4,7 @@ const oscFunctions = require('./oscFunctions');
 // or use the desk layout??
 var consoleConfig = {
 	"name" : "consoleConfig",
-	"channelInputs" : 40,
+	"channelInputs" : 48,
 	"auxOutputs" : 12
 };
 

@@ -1,5 +1,6 @@
 angular.module('DigiControl.controllers').controller('EngSelectCtrl', function($scope, $state, SocketHelper, socket) {
 	SocketHelper.RequestConfig();
+	SocketHelper.RequestAuxNames();
 
 	$scope.$on('socket:announcements', function(ev, data) {
 		$scope.aux = [];
