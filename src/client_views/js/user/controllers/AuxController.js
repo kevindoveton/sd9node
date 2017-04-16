@@ -18,7 +18,6 @@ angular.module('DigiControl.controllers').controller('AuxCtrl', function($scope,
 	
 	
 	function SliderEnd(id, value, highValue, pointerType) {
-		// console.log(id, value);
 		SocketHelper.SetAuxVolume(AuxId, id, value);
 	}
 	$scope.SliderEnd = SliderEnd;

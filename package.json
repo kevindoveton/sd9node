@@ -4,6 +4,7 @@
   "description": "A middle man for the SD9 console, providing multiple clients access",
   "main": "app.js",
   "dependencies": {
+    "bonjour": "^3.5.0",
     "electron": "^1.4.15",
     "express": "^4.14.0",
     "jquery": "^3.1.1",
