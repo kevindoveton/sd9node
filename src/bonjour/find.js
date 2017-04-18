@@ -1,7 +1,7 @@
 const bonjour = require('bonjour')();
 
 var browser = bonjour.findOne({
-	type: 'digicontrol',
+	name: 'DigiControl',
 	protocol: 'udp'
 }, function() {
 	console.log(browser.services)

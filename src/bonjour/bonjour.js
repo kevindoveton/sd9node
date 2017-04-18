@@ -1,7 +1,7 @@
 const bonjour = require('bonjour')();
 
 const options = {
-	name: 'digicontrol',
+	name: 'DigiControl',
 	port: 3546,
 	type: 'digicontrol',
 	protocol: 'udp',
