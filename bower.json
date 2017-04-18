@@ -1,0 +1,22 @@
+{
+  "name": "sd9server",
+  "description": "A middle man for the SD9 console, providing multiple clients access",
+  "main": "",
+  "authors": [
+    "Kevin Doveton"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "sd9",
+    "digico"
+  ],
+  "homepage": "https://github.com/kevindoveton/digiconode",
+  "private": true,
+  "dependencies": {
+    "angular-ui-router": "^0.4.2",
+    "angular": "^1.6.4",
+    "angularjs-slider": "^6.1.1",
+    "ng-socket": "^0.1.2",
+    "angular-socket-io": "^0.7.0"
+  }
+}

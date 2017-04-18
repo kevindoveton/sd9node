@@ -70,7 +70,7 @@ var auxVolumeCallback = function(address, message)
 		"v":volume
 	};
 
-	socket.groupEmit("volume/aux/"+auxSend, JSON.stringify(obj));
+	socket.groupEmit("volume/aux", JSON.stringify(obj));
 }
 
 var inputNameCallback = function(address, message)
@@ -81,15 +81,13 @@ var inputNameCallback = function(address, message)
 		"c":channel,
 		"n":name
 	};
-
+	
 	socket.groupEmit("name/input", JSON.stringify(obj));
 }
 
 var inputMuteCallback = function(address, message)
 {
-	console.log(address);
 	var channel = address.split("/Input_Channels/")[1].split("/mute")[0];
-	console.log(channel);
 	var mute = message
 	var obj = {
 		"c":channel,

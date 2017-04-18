@@ -1,0 +1,8 @@
+div.title
+	h1 DigiControl
+	h2 Select your foldback
+
+div.app#app
+	div.item(ng-repeat="d in aux" ui-sref="aux({auxId:d.id})")
+		button.btn.btn-primary.btn-lg {{d.name}}
+		

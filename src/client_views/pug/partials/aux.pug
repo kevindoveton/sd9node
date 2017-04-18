@@ -1,0 +1,16 @@
+div
+	div#faders.faders
+		div.fader(ng-repeat="d in faders")
+			rzslider(rz-slider-model="d.value" rz-slider-options="{id:d.id,vertical:true,onEnd:SliderEnd,hidePointerLabels:true,hideLimitLabels:true,stepsArray: StepArray}").fader
+			p.name {{d.name}}
+			div.faderNumbers
+				span +10
+				span +5
+				span 0
+				span -5
+				span -10
+				span -20
+				span -30
+				span -40
+				span -50
+				span -60

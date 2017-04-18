@@ -30,6 +30,7 @@ $(function() {
 
 	socket.on('name/input', function (data) {
 		data = JSON.parse(data);
+		console.log(data);
 		updateFaderName(data["c"], data["n"]);
 	});
 
@@ -40,7 +41,7 @@ $(function() {
 		}
 	});
 
-	socket.on('volume/aux/'+auxnumber, function (data) { // +auxnumber may not be needed
+	socket.on('volume/aux', function (ev, data) { // +auxnumber may not be needed
 		data = JSON.parse(data);
 
 		if (data["a"] == auxnumber) {

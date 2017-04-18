@@ -4,6 +4,7 @@
   "description": "A middle man for the SD9 console, providing multiple clients access",
   "main": "app.js",
   "dependencies": {
+    "bonjour": "^3.5.0",
     "electron": "^1.4.15",
     "express": "^4.14.0",
     "jquery": "^3.1.1",
@@ -19,7 +20,9 @@
     "gulp-data": "^1.2.0",
     "gulp-pug": "^3.0.3",
     "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^2.0.0",
+    "main-bower-files": "^2.13.1",
     "pump": "^1.0.1"
   },
   "scripts": {

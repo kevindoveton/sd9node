@@ -303,9 +303,9 @@ var getIPAddresses = function () {
 // SD9 Server
 udp = new osc.UDPPort({
 	localAddress: "0.0.0.0",
-	localPort: 5050,
+	localPort: 6050,
 	remoteAddress: "127.0.0.1",
-	remotePort: 6050
+	remotePort: 5050
 });
 
 udp.on("ready", function () {
