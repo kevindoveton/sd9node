@@ -1,12 +1,17 @@
 const bonjour = require('bonjour')();
 
-const options = {
-	name: 'DigiControl',
-	port: 3546,
-	type: 'digicontrol',
-	protocol: 'udp',
-}
 
-var service = bonjour.publish(options)
-service.start();
-console.log(service.name);
+
+module.exports = function(port) {
+	const options = {
+		name: 'DigiControl',
+		port: port,
+		type: 'digicontrol',
+		protocol: 'udp',
+	}
+	
+	var service = bonjour.publish(options)
+	service.start();
+	console.log('Bonjour Started')
+	// console.log(service.type, service.port);
+}

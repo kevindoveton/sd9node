@@ -12,7 +12,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'server_static/html/index.html'),
+    pathname: path.join(__dirname, '../app/html/index.html'),
     protocol: 'file:',
     slashes: true,
     fullscreen: true
@@ -57,4 +57,4 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 // vendor
-var server = require('./app')();
+var server = require('./webserver/app')();
